@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: Breakout Blocks
-author: Nikhil, Rohan, Pranav, Aditya, Shriya, Samhita, West
+author: Nikhil, Rohan, Pranav, Aditya, Shriya, Samhita
 permalink: functionalbreakoutgame
 ---
 
@@ -26,11 +26,6 @@ permalink: functionalbreakoutgame
 <button id="nextLevelBtn" style="display:none;margin:10px auto 0;padding:10px 16px;font-family:system-ui,Arial;font-size:16px;font-weight:600;border:1px solid #222;background:#fff;cursor:pointer;border-radius:8px;display:block;max-width:600px;color:#111 !important;">
   Next Level ▶
 </button>
-
-## Changes:
- - Colors changed
- - Font changed
- - Ball now speeds up every time a block is hit. We did this by incrementing the speed every hit
 
 <div id="hack1" style="max-width:600px;margin:8px auto;font-family:system-ui,Arial;">
 <!-- Hack #1: 90% hack section -->
@@ -98,12 +93,12 @@ permalink: functionalbreakoutgame
 
   // --- Levels / pause ---
   let level = 1;
-  let levelSpeedScale = 1.12; // ball speed multiplier each level
+  const levelSpeedScale = 1.12; // ball speed multiplier each level
   let paused = false;
 
   // Paddle
-  let paddleHeight = 20;
-  let basePaddleWidth = 100;
+  let paddleHeight = 10;
+  let basePaddleWidth = 25;
   let paddleWidth = basePaddleWidth;
   let paddleX = (canvas.width - paddleWidth) / 2;
 
@@ -114,7 +109,6 @@ permalink: functionalbreakoutgame
   let ballRadius = 6;
   let x = canvas.width / 2;
   let y = canvas.height - 30;
-  let poweredUp = false
   let dx = 2;
   let dy = -2;
 
@@ -154,7 +148,7 @@ permalink: functionalbreakoutgame
   // Active powerup state
   let activePowerUp = null;
   let powerUpTimer = 0;
-  const powerUpDuration = 10000; // 10seconds
+  const powerUpDuration = 5000; // 5 seconds
 
   // Input handling
   document.addEventListener("keydown", keyDownHandler);
@@ -190,15 +184,13 @@ permalink: functionalbreakoutgame
             y > b.y &&
             y < b.y + brickHeight
           ) {
-            dy = Math.sign(dx)*-0.1 - dy
-            dx = Math.sign(dx)*0.1 + dx
+            dy = -dy;
             b.status = 0;
 
             score++;
 
             if (b.powerUp) {
               powerUps.push({ x: b.x + brickWidth / 2, y: b.y, active: true });
-              poweredUp = true
             }
           }
         }
@@ -427,7 +419,7 @@ permalink: functionalbreakoutgame
         } else {
           x = canvas.width/2; 
           y = canvas.height - 30;
-          dx = 2 * Math.sign(dx)
+          dx = 2 * Math.sign(dx);
           dy = -2;
           paddleX = (canvas.width - paddleWidth) / 2;
         }
@@ -441,8 +433,8 @@ permalink: functionalbreakoutgame
       paddleX -= 7;
     }
 
-    x += dx * (activePowerUp == null? 1:2);
-    y += dy * (activePowerUp == null? 1:2);
+    x += dx;
+    y += dy;
 
     if (!paused) requestAnimationFrame(draw);
   }
